@@ -7,13 +7,13 @@ install:
 - set APPPATH=C:\projects\RedisDesktopManager
 - set PATH=%QTDIR%\bin;%PATH%
 - call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat"
-- nuget install -Version 1.8.0 -OutputDirectory ./3rdparty/qredisclient/3rdparty/windows rmt_libssh2
+- nuget install -Version 1.8.0 -OutputDirectory %APPPATH%\3rdparty\qredisclient\3rdparty\windows rmt_libssh2
 - qmake -v
 
 build_script:
 - set SRCDIR=%cd%
-- python ./build/utils/set_version.py %APPVEYOR_BUILD_VERSION% > %APPPATH%/src/version.h
-- python ./build/utils/set_version.py %APPVEYOR_BUILD_VERSION% > %APPPATH%/3rdparty/crashreporter/src/version.h
+- python ./build/utils/set_version.py %APPVEYOR_BUILD_VERSION% > %APPPATH%\src\version.h
+- python ./build/utils/set_version.py %APPVEYOR_BUILD_VERSION% > %APPPATH%\3rdparty\crashreporter\src\version.h
 - cd ./3rdparty/crashreporter
 - qmake CONFIG+=release DESTDIR=%SRCDIR%/bin/windows/release
 - nmake /S /NOLOGO release
