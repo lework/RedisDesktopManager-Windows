@@ -11,32 +11,32 @@ install:
 - qmake -v
 
 build_script:
-- set SRCDIR=%cd%
-- python ./build/utils/set_version.py %APPVEYOR_BUILD_VERSION% > %APPPATH%\src\version.h
-- python ./build/utils/set_version.py %APPVEYOR_BUILD_VERSION% > %APPPATH%\3rdparty\crashreporter\src\version.h
-- cd ./3rdparty/crashreporter
+- set SRCDIR=%APPPATH%
+- python  %APPPATH%/build/utils/set_version.py %APPVEYOR_BUILD_VERSION% > %APPPATH%\src\version.h
+- python %APPPATH%/build/utils/set_version.py %APPVEYOR_BUILD_VERSION% > %APPPATH%\3rdparty\crashreporter\src\version.h
+- cd %APPPATH%/3rdparty/crashreporter
 - qmake CONFIG+=release DESTDIR=%SRCDIR%/bin/windows/release
 - nmake /S /NOLOGO release
 - cd %SRCDIR%/src
 - qmake CONFIG+=release
 - nmake /S /NOLOGO release
 - cd %SRCDIR%
-- copy /y .\bin\windows\release\rdm.exe .\build\windows\installer\resources\rdm.exe
-- copy /y .\bin\windows\release\rdm.pdb .\build\windows\installer\resources\rdm.pdb
-- copy /y .\3rdparty\qredisclient\3rdparty\windows\rmt_openssl.1.1.0.3\build\native\bin\v140\Win32\Release\dynamic\libcrypto-1_1.dll .\build\windows\installer\resources\libcrypto-1_1.dll
-- copy /y .\3rdparty\qredisclient\3rdparty\windows\rmt_openssl.1.1.0.3\build\native\bin\v140\Win32\Release\dynamic\libssl-1_1.dll .\build\windows\installer\resources\libssl-1_1.dll
-- copy /y .\3rdparty\qredisclient\3rdparty\windows\rmt_openssl.1.1.0.3\build\native\bin\v140\Win32\Release\dynamic\capi.dll .\build\windows\installer\resources\capi.dll
-- copy /y .\3rdparty\qredisclient\3rdparty\windows\rmt_openssl.1.1.0.3\build\native\bin\v140\Win32\Release\dynamic\padlock.dll .\build\windows\installer\resources\padlock.dll
-- cd build/windows/installer/resources/
+- copy /y %APPPATH%\bin\windows\release\rdm.exe %APPPATH%\build\windows\installer\resources\rdm.exe
+- copy /y %APPPATH%\bin\windows\release\rdm.pdb %APPPATH%\build\windows\installer\resources\rdm.pdb
+- copy /y %APPPATH%\3rdparty\qredisclient\3rdparty\windows\rmt_openssl.1.1.0.3\build\native\bin\v140\Win32\Release\dynamic\libcrypto-1_1.dll %APPPATH%\build\windows\installer\resources\libcrypto-1_1.dll
+- copy /y %APPPATH%\3rdparty\qredisclient\3rdparty\windows\rmt_openssl.1.1.0.3\build\native\bin\v140\Win32\Release\dynamic\libssl-1_1.dll %APPPATH%\build\windows\installer\resources\libssl-1_1.dll
+- copy /y %APPPATH%\3rdparty\qredisclient\3rdparty\windows\rmt_openssl.1.1.0.3\build\native\bin\v140\Win32\Release\dynamic\capi.dll %APPPATH%\build\windows\installer\resources\capi.dll
+- copy /y %APPPATH%\3rdparty\qredisclient\3rdparty\windows\rmt_openssl.1.1.0.3\build\native\bin\v140\Win32\Release\dynamic\padlock.dll %APPPATH%\build\windows\installer\resources\padlock.dll
+- cd %APPPATH%/build/windows/installer/resources/
 - windeployqt --no-angle --no-opengl-sw --no-compiler-runtime --no-translations --release --force --qmldir %SRCDIR%/src/qml rdm.exe
-- rmdir /S /Q .\platforminputcontexts
-- rmdir /S /Q .\qmltooling
-- rmdir /S /Q .\QtGraphicalEffects
-- del /Q  .\imageformats\qtiff.dll
-- del /Q  .\imageformats\qwebp.dll
+- rmdir /S /Q %APPPATH%\platforminputcontexts
+- rmdir /S /Q %APPPATH%\qmltooling
+- rmdir /S /Q %APPPATH%\QtGraphicalEffects
+- del /Q  %APPPATH%\imageformats\qtiff.dll
+- del /Q  %APPPATH%\imageformats\qwebp.dll
 - cd %SRCDIR%
-- call "C:\\Program Files (x86)\\NSIS\\makensis.exe" /V1 /DVERSION=%APPVEYOR_BUILD_VERSION%  ./build/windows/installer/installer.nsi
+- call "C:\\Program Files (x86)\\NSIS\\makensis.exe" /V1 /DVERSION=%APPVEYOR_BUILD_VERSION%  %APPPATH%/build/windows/installer/installer.nsi
 test_script:
 - echo 'Windows build is used only for installer compilation. Skip tests.'
 artifacts:
-  - path: 'build/windows/installer/*.exe'
+  - path: "%APPPATH%/build/windows/installer/*.exe"
