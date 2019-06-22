@@ -2,11 +2,12 @@ os: Visual Studio 2017
 version: '{branch}-{build}'
 clone_depth: 5
 install:
-- git clone -q -b 2019.1 https://github.com/uglide/RedisDesktopManager.git C:\projects\RedisDesktopManager
+- git clone -q --depth=5 --branch=2019.1 https://github.com/uglide/RedisDesktopManager.git C:\projects\RedisDesktopManage
 - set QTDIR=C:\Qt\5.9\msvc2017_64
 - set SRCDIR=C:\projects\RedisDesktopManager
 - set PATH=%QTDIR%\bin;%PATH%
 - cd %SRCDIR%
+- git checkout --branch=2019.1
 - git submodule update --init --recursive
 - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
 - powershell -command "iex ((New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/appveyor/secure-file/master/install.ps1'))"
