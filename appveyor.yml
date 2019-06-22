@@ -10,13 +10,11 @@ install:
 - git submodule update --init --recursive
 - call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat"
 - powershell -command "iex ((New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/appveyor/secure-file/master/install.ps1'))"
+- nuget install -Version 1.8.0 -OutputDirectory ./3rdparty/qredisclient/3rdparty/windows rmt_libssh2
 - qmake -v
 
 build_script:
 - cd %SRCDIR%
-- cd ./3rdparty/qsshclient/3rdparty/libssh2
-- cmake -G "Visual Studio 14 2015" -DCRYPTO_BACKEND=OpenSSL -DOPENSSL_ROOT_DIR=C:\OpenSSL-Win32\ -DBUILD_EXAMPLES=off -DBUILD_TESTING=off -H. -Bbuild
-- cmake --build build --config "Release"
 - python ./build/utils/set_version.py %APPVEYOR_BUILD_VERSION% > ./src/version.h
 - python ./build/utils/set_version.py %APPVEYOR_BUILD_VERSION% > ./3rdparty/crashreporter/src/version.h
 - cd ./3rdparty/crashreporter
