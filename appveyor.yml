@@ -24,7 +24,7 @@ build_script:
 - powershell -Command "(Get-Content Makefile.Release).replace('DEFINES       =', 'DEFINES       = -DAPP_NAME=\\\"RedisDesktopManager\\\" -DAPP_VERSION=\\\""%APPVEYOR_BUILD_VERSION%"\\\" -DCRASH_SERVER_URL=\\\"https://oops.redisdesktop.com/crash-report\\\"') " > Makefile.Release2
 - nmake -f Makefile.Release2
 - cd %SRCDIR%/3rdparty
-- nuget install zlib-msvc14-x64 -Version 1.2.11.779
+- nuget install zlib-msvc14-x64 -Version 1.2.11.7795
 - cd %SRCDIR%/src
 - lrelease rdm.pro
 - qmake CONFIG+=release
