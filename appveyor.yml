@@ -40,4 +40,4 @@ build_script:
 test_script:
 - echo 'Windows build is used only for installer compilation. Skip tests.'
 artifacts:
-  - path: "%APPPATH%\build\windows\installer\*.exe"
+  - path: "%APPPATH%\\build\\windows\\installer\\*.exe"
