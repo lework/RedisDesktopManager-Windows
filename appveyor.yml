@@ -12,6 +12,7 @@ install:
 
 build_script:
 - set SRCDIR=%APPPATH%
+- dir %APPPATH%
 - python  %APPPATH%\build\utils\set_version.py %APPVEYOR_BUILD_VERSION% > %APPPATH%\src\version.h
 - python %APPPATH%\build\utils\set_version.py %APPVEYOR_BUILD_VERSION% > %APPPATH%\3rdparty\crashreporter\src\version.h
 - cd %APPPATH%\3rdparty\crashreporter
