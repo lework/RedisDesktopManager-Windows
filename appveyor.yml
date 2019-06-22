@@ -1,5 +1,5 @@
 os: Visual Studio 2015
-version: '{branch}'
+version: '{branch}-{build}'
 clone_depth: 5
 install:
 - git clone -q https://github.com/uglide/RedisDesktopManager.git ./RedisDesktopManager
