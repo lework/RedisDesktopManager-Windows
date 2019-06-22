@@ -2,7 +2,7 @@ os: Visual Studio 2015
 version: '{branch}'
 clone_depth: 5
 install:
-- git clone -q --branch=%APPVEYOR_BUILD_VERSION% https://github.com/uglide/RedisDesktopManager.git ./RedisDesktopManager
+- git clone -q https://github.com/uglide/RedisDesktopManager.git ./RedisDesktopManager
 - set QTDIR=C:\Qt\5.9\msvc2015
 - set APPPATH=C:\projects\RedisDesktopManager
 - set PATH=%QTDIR%\bin;%PATH%
