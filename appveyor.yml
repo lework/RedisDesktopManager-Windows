@@ -6,7 +6,7 @@ install:
 - set QTDIR=C:\Qt\5.9\msvc2017_64
 - set SRCDIR=C:\projects\RedisDesktopManager
 - set PATH=%QTDIR%\bin;%PATH%
-- cd %APPPATH%
+- cd %SRCDIR%
 - git checkout -b 2019.1
 - git submodule update --init --recursive
 - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
