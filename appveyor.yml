@@ -34,7 +34,7 @@ build_script:
 - copy /y .\bin\windows\release\crashreporter.exe .\build\windows\installer\resources\crashreporter.exe
 - copy /y .\bin\windows\release\rdm.pdb .\build\windows\installer\resources\rdm.pdb
 - copy /y .\3rdparty\qredisclient\botan.dll .\build\windows\installer\resources\botan.dll
-- "%SRCDIR%/3rdparty/gbreakpad/src/tools/windows/binaries/dump_syms .\\bin\\windows\\release\\rdm.pdb  > .\\build\windows\\installer\\resources\\rdm.sym"
+- "%SRCDIR%/3rdparty/gbreakpad/src/tools/windows/binaries/dump_syms .\\bin\\windows\\release\\rdm.pdb  > .\\build\\windows\\installer\\resources\\rdm.sym"
 - cd %APPPATH%\build\windows\installer\resources\
 - windeployqt --no-angle --no-opengl-sw --no-compiler-runtime --no-translations --release --force --qmldir %SRCDIR%\src\qml rdm.exe
 - rmdir /S /Q %APPPATH%\platforminputcontexts
