@@ -1,0 +1,2 @@
+# RedisDesktopManager-Windows
+RedisDesktopManager Windows版本
