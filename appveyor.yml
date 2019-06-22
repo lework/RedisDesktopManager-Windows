@@ -12,11 +12,11 @@ install:
 
 build_script:
 - set SRCDIR=%APPPATH%
-- dir %APPPATH%
-- python  %APPPATH%\build\utils\set_version.py %APPVEYOR_BUILD_VERSION% > %APPPATH%\src\version.h
+- dir %SRCDIR%
+- python %APPPATH%\build\utils\set_version.py %APPVEYOR_BUILD_VERSION% > %APPPATH%\src\version.h
 - python %APPPATH%\build\utils\set_version.py %APPVEYOR_BUILD_VERSION% > %APPPATH%\3rdparty\crashreporter\src\version.h
 - cd %APPPATH%\3rdparty\crashreporter
-- qmake CONFIG+=release DESTDIR=%SRCDIR%/bin/windows/release
+- qmake CONFIG+=release DESTDIR=%SRCDIR%\bin\windows\release
 - nmake /S /NOLOGO release
 - cd %SRCDIR%/src
 - qmake CONFIG+=release
@@ -28,16 +28,16 @@ build_script:
 - copy /y %APPPATH%\3rdparty\qredisclient\3rdparty\windows\rmt_openssl.1.1.0.3\build\native\bin\v140\Win32\Release\dynamic\libssl-1_1.dll %APPPATH%\build\windows\installer\resources\libssl-1_1.dll
 - copy /y %APPPATH%\3rdparty\qredisclient\3rdparty\windows\rmt_openssl.1.1.0.3\build\native\bin\v140\Win32\Release\dynamic\capi.dll %APPPATH%\build\windows\installer\resources\capi.dll
 - copy /y %APPPATH%\3rdparty\qredisclient\3rdparty\windows\rmt_openssl.1.1.0.3\build\native\bin\v140\Win32\Release\dynamic\padlock.dll %APPPATH%\build\windows\installer\resources\padlock.dll
-- cd %APPPATH%\build\windows/installer/resources/
-- windeployqt --no-angle --no-opengl-sw --no-compiler-runtime --no-translations --release --force --qmldir %SRCDIR%/src/qml rdm.exe
+- cd %APPPATH%\build\windows\installer\resources\
+- windeployqt --no-angle --no-opengl-sw --no-compiler-runtime --no-translations --release --force --qmldir %SRCDIR%\src\qml rdm.exe
 - rmdir /S /Q %APPPATH%\platforminputcontexts
 - rmdir /S /Q %APPPATH%\qmltooling
 - rmdir /S /Q %APPPATH%\QtGraphicalEffects
 - del /Q  %APPPATH%\imageformats\qtiff.dll
 - del /Q  %APPPATH%\imageformats\qwebp.dll
 - cd %SRCDIR%
-- call "C:\\Program Files (x86)\\NSIS\\makensis.exe" /V1 /DVERSION=%APPVEYOR_BUILD_VERSION%  %APPPATH%\build\windows/installer/installer.nsi
+- call "C:\\Program Files (x86)\\NSIS\\makensis.exe" /V1 /DVERSION=%APPVEYOR_BUILD_VERSION%  %APPPATH%\build\windows\installer\installer.nsi
 test_script:
 - echo 'Windows build is used only for installer compilation. Skip tests.'
 artifacts:
-  - path: "%APPPATH%/build/windows/installer/*.exe"
+  - path: "%APPPATH%\build\windows\installer\*.exe"
