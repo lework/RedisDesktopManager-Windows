@@ -15,24 +15,26 @@ install:
 build_script:
 - set SRCDIR=%APPPATH%
 - dir %SRCDIR%
-- cd %SRCDIR%/3rdparty/qredisclient/
-- powershell -command "(New-Object System.Net.WebClient).DownloadFile('%deps_url%', 'deps.zip')"
-- 7z.exe x deps.zip
-- python %APPPATH%\build\utils\set_version.py %APPVEYOR_BUILD_VERSION% > %APPPATH%\src\version.h
-- python %APPPATH%\build\utils\set_version.py %APPVEYOR_BUILD_VERSION% > %APPPATH%\3rdparty\crashreporter\src\version.h
-- cd %APPPATH%\3rdparty\crashreporter
+- cd %SRCDIR%
+- python ./build/utils/set_version.py %APPVEYOR_BUILD_VERSION% > ./src/version.h
+- python ./build/utils/set_version.py %APPVEYOR_BUILD_VERSION% > ./3rdparty/crashreporter/src/version.h
+- cd ./3rdparty/crashreporter
+- cd %SRCDIR%\3rdparty\crashreporter
 - qmake CONFIG+=release DESTDIR=%SRCDIR%\bin\windows\release
-- nmake /S /NOLOGO release
+- powershell -Command "(Get-Content Makefile.Release).replace('DEFINES       =', 'DEFINES       = -DAPP_NAME=\\\"RedisDesktopManager\\\" -DAPP_VERSION=\\\""%APPVEYOR_BUILD_VERSION%"\\\" -DCRASH_SERVER_URL=\\\"https://oops.redisdesktop.com/crash-report\\\"') " > Makefile.Release2
+- nmake -f Makefile.Release2
+- cd %SRCDIR%/3rdparty
+- nuget install zlib-msvc14-x64 -Version 1.2.11.779
 - cd %SRCDIR%/src
+- lrelease rdm.pro
 - qmake CONFIG+=release
 - nmake /S /NOLOGO release
 - cd %SRCDIR%
-- copy /y %APPPATH%\bin\windows\release\rdm.exe %APPPATH%\build\windows\installer\resources\rdm.exe
-- copy /y %APPPATH%\bin\windows\release\rdm.pdb %APPPATH%\build\windows\installer\resources\rdm.pdb
-- copy /y %APPPATH%\3rdparty\qredisclient\3rdparty\windows\rmt_openssl.1.1.0.3\build\native\bin\v140\Win32\Release\dynamic\libcrypto-1_1.dll %APPPATH%\build\windows\installer\resources\libcrypto-1_1.dll
-- copy /y %APPPATH%\3rdparty\qredisclient\3rdparty\windows\rmt_openssl.1.1.0.3\build\native\bin\v140\Win32\Release\dynamic\libssl-1_1.dll %APPPATH%\build\windows\installer\resources\libssl-1_1.dll
-- copy /y %APPPATH%\3rdparty\qredisclient\3rdparty\windows\rmt_openssl.1.1.0.3\build\native\bin\v140\Win32\Release\dynamic\capi.dll %APPPATH%\build\windows\installer\resources\capi.dll
-- copy /y %APPPATH%\3rdparty\qredisclient\3rdparty\windows\rmt_openssl.1.1.0.3\build\native\bin\v140\Win32\Release\dynamic\padlock.dll %APPPATH%\build\windows\installer\resources\padlock.dll
+- copy /y .\bin\windows\release\rdm.exe .\build\windows\installer\resources\rdm.exe
+- copy /y .\bin\windows\release\crashreporter.exe .\build\windows\installer\resources\crashreporter.exe
+- copy /y .\bin\windows\release\rdm.pdb .\build\windows\installer\resources\rdm.pdb
+- copy /y .\3rdparty\qredisclient\botan.dll .\build\windows\installer\resources\botan.dll
+- %SRCDIR%/3rdparty/gbreakpad/src/tools/windows/binaries/dump_syms .\bin\windows\release\rdm.pdb  > .\build\windows\installer\resources\rdm.sym
 - cd %APPPATH%\build\windows\installer\resources\
 - windeployqt --no-angle --no-opengl-sw --no-compiler-runtime --no-translations --release --force --qmldir %SRCDIR%\src\qml rdm.exe
 - rmdir /S /Q %APPPATH%\platforminputcontexts
@@ -40,9 +42,10 @@ build_script:
 - rmdir /S /Q %APPPATH%\QtGraphicalEffects
 - del /Q  %APPPATH%\imageformats\qtiff.dll
 - del /Q  %APPPATH%\imageformats\qwebp.dll
+- C:\Python37\python.exe -m pip install -t . -r %SRCDIR%/src/py/requirements.txt
 - cd %SRCDIR%
-- call "C:\\Program Files (x86)\\NSIS\\makensis.exe" /V1 /DVERSION=%APPVEYOR_BUILD_VERSION%  %APPPATH%\build\windows\installer\installer.nsi
+- 7z.exe a redis-desktop-manager-%APPVEYOR_BUILD_VERSION%.zip ./build/windows/installer/resources/*
 test_script:
 - echo 'Windows build is used only for installer compilation. Skip tests.'
 artifacts:
-  - path: "%APPPATH%\\build\\windows\\installer\\*.exe"
+  - path: "%SRCDIR%\\redis-desktop-manager-%APPVEYOR_BUILD_VERSION%.zip"
