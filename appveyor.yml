@@ -1,15 +1,15 @@
-os: Visual Studio 2017
-version: '{branch}-{build}'
+os: Visual Studio 2015
+version: 0.9.2.{build}
 clone_depth: 5
 install:
 - git clone -q --depth=5 --recursive --branch=2019.1 https://github.com/uglide/RedisDesktopManager.git C:\projects\RedisDesktopManager
-- set QTDIR=C:\Qt\5.9\msvc2017_64
 - set SRCDIR=C:\projects\RedisDesktopManager
+- set QTDIR=C:\Qt\5.9\msvc2015
 - set PATH=%QTDIR%\bin;%PATH%
 - cd %SRCDIR%
 - git submodule update --init --recursive
-- call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
-- powershell -command "iex ((New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/appveyor/secure-file/master/install.ps1'))"
+- call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat"
+- nuget install -Version 1.8.0 -OutputDirectory ./3rdparty/qredisclient/3rdparty/windows rmt_libssh2
 - qmake -v
 
 build_script:
@@ -17,33 +17,28 @@ build_script:
 - python ./build/utils/set_version.py %APPVEYOR_BUILD_VERSION% > ./src/version.h
 - python ./build/utils/set_version.py %APPVEYOR_BUILD_VERSION% > ./3rdparty/crashreporter/src/version.h
 - cd ./3rdparty/crashreporter
-- cd %SRCDIR%\3rdparty\crashreporter
-- qmake CONFIG+=release DESTDIR=%SRCDIR%\bin\windows\release
-- powershell -Command "(Get-Content Makefile.Release).replace('DEFINES       =', 'DEFINES       = -DAPP_NAME=\\\"RedisDesktopManager\\\" -DAPP_VERSION=\\\""%APPVEYOR_BUILD_VERSION%"\\\" -DCRASH_SERVER_URL=\\\"https://oops.redisdesktop.com/crash-report\\\"') " > Makefile.Release2
-- nmake -f Makefile.Release2
-- cd %SRCDIR%/3rdparty
-- nuget install zlib-msvc14-x64 -Version 1.2.11.7795
+- qmake CONFIG+=release DESTDIR=%SRCDIR%/bin/windows/release
+- nmake /S /NOLOGO release
 - cd %SRCDIR%/src
-- lrelease rdm.pro
 - qmake CONFIG+=release
 - nmake /S /NOLOGO release
 - cd %SRCDIR%
 - copy /y .\bin\windows\release\rdm.exe .\build\windows\installer\resources\rdm.exe
-- copy /y .\bin\windows\release\crashreporter.exe .\build\windows\installer\resources\crashreporter.exe
 - copy /y .\bin\windows\release\rdm.pdb .\build\windows\installer\resources\rdm.pdb
-- copy /y .\3rdparty\qredisclient\botan.dll .\build\windows\installer\resources\botan.dll
-- "%SRCDIR%/3rdparty/gbreakpad/src/tools/windows/binaries/dump_syms .\\bin\\windows\\release\\rdm.pdb  > .\\build\\windows\\installer\\resources\\rdm.sym"
-- cd %APPPATH%\build\windows\installer\resources\
-- windeployqt --no-angle --no-opengl-sw --no-compiler-runtime --no-translations --release --force --qmldir %SRCDIR%\src\qml rdm.exe
-- rmdir /S /Q %APPPATH%\platforminputcontexts
-- rmdir /S /Q %APPPATH%\qmltooling
-- rmdir /S /Q %APPPATH%\QtGraphicalEffects
-- del /Q  %APPPATH%\imageformats\qtiff.dll
-- del /Q  %APPPATH%\imageformats\qwebp.dll
-- C:\Python37\python.exe -m pip install -t . -r %SRCDIR%/src/py/requirements.txt
+- copy /y .\3rdparty\qredisclient\3rdparty\windows\rmt_openssl.1.1.0.3\build\native\bin\v140\Win32\Release\dynamic\libcrypto-1_1.dll .\build\windows\installer\resources\libcrypto-1_1.dll
+- copy /y .\3rdparty\qredisclient\3rdparty\windows\rmt_openssl.1.1.0.3\build\native\bin\v140\Win32\Release\dynamic\libssl-1_1.dll .\build\windows\installer\resources\libssl-1_1.dll
+- copy /y .\3rdparty\qredisclient\3rdparty\windows\rmt_openssl.1.1.0.3\build\native\bin\v140\Win32\Release\dynamic\capi.dll .\build\windows\installer\resources\capi.dll
+- copy /y .\3rdparty\qredisclient\3rdparty\windows\rmt_openssl.1.1.0.3\build\native\bin\v140\Win32\Release\dynamic\padlock.dll .\build\windows\installer\resources\padlock.dll
+- cd build/windows/installer/resources/
+- windeployqt --no-angle --no-opengl-sw --no-compiler-runtime --no-translations --release --force --qmldir %SRCDIR%/src/qml rdm.exe
+- rmdir /S /Q .\platforminputcontexts
+- rmdir /S /Q .\qmltooling
+- rmdir /S /Q .\QtGraphicalEffects
+- del /Q  .\imageformats\qtiff.dll
+- del /Q  .\imageformats\qwebp.dll
 - cd %SRCDIR%
-- 7z.exe a redis-desktop-manager-%APPVEYOR_BUILD_VERSION%.zip ./build/windows/installer/resources/*
+- call "C:\\Program Files (x86)\\NSIS\\makensis.exe" /V1 /DVERSION=%APPVEYOR_BUILD_VERSION%  ./build/windows/installer/installer.nsi
 test_script:
 - echo 'Windows build is used only for installer compilation. Skip tests.'
 artifacts:
-  - path: "%SRCDIR%\\redis-desktop-manager-%APPVEYOR_BUILD_VERSION%.zip"
+  - path: 'build/windows/installer/*.exe'
