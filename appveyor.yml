@@ -7,7 +7,7 @@ install:
 - set SRCDIR=C:\projects\RedisDesktopManager
 - set PATH=%QTDIR%\bin;%PATH%
 - cd %SRCDIR%
-- git checkout -b=2019.1
+- git checkout -b 2019.1
 - git submodule update --init --recursive
 - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
 - powershell -command "iex ((New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/appveyor/secure-file/master/install.ps1'))"
