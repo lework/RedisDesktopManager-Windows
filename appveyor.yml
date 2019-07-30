@@ -1,5 +1,5 @@
 os: Visual Studio 2017
-version: 0.9.2.{build}
+version: 2019.1.{build}
 clone_depth: 5
 install:
 - set /P RDM_VERSION=<version.txt
@@ -50,7 +50,7 @@ build_script:
 - del /Q  .\imageformats\qwebp.dll
 - C:\Python37\python.exe -m pip install -t . -r %SRCDIR%/src/py/requirements.txt
 - cd %SRCDIR%
-- call "C:\\Program Files (x86)\\NSIS\\makensis.exe" /V1 /DVERSION=%RDM_VERSION% ./build/windows/installer/installer.nsi
+- call "C:\\Program Files (x86)\\NSIS\\makensis.exe" /V1 /DVERSION=%APPVEYOR_BUILD_VERSION% ./build/windows/installer/installer.nsi
 - cd %APPVEYOR_BUILD_FOLDER%
 - 7z.exe a redis-desktop-manager-%RDM_VERSION%.zip  %SRCDIR%/build/windows/installer/redis-desktop-manager-%APPVEYOR_BUILD_VERSION%.exe
 artifacts:
