@@ -47,7 +47,5 @@ build_script:
 - C:\Python37\python.exe -m pip install -t . -r %SRCDIR%/src/py/requirements.txt
 - cd %SRCDIR%
 - 7z.exe a redis-desktop-manager-%APPVEYOR_BUILD_VERSION%.zip ./build/windows/installer/resources/*
-test_script:
-- echo 'Windows build is used only for installer compilation. Skip tests.'
 artifacts:
-  - path: 'C:\projects\redisdesktopmanager/redis-desktop-manager-*'
+  - path: "C:\projects\redisdesktopmanager\redis-desktop-manager-%APPVEYOR_BUILD_VERSION%.zip"
