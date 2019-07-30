@@ -60,7 +60,7 @@ deploy:
   description: $(RDM_VERSION)
   provider: GitHub
   auth_token:
-    secure: $(token) # your encrypted token from GitHub
+    secure: 3BFf8EhHwdlpCZJpwS8/8EizWPFKs9CJPYLL9RLaRZtNMtLWuVtAixRtZTogb0Af # your encrypted token from GitHub
   artifact: redis-desktop-manager-$(RDM_VERSION).zip   # upload all NuGet packages to release assets
   draft: false
   prerelease: false
