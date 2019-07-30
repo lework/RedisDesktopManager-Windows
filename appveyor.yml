@@ -26,7 +26,7 @@ build_script:
 - git clone https://github.com/randombit/botan.git
 - cd botan
 - python configure.py
-- cd qredisclient/3rdparty/hiredis
+- cd ../qredisclient/3rdparty/hiredis
 - git apply ../hiredis-win.patch
 - cd %SRCDIR%/src
 - lrelease rdm.pro
