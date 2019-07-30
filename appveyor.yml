@@ -2,12 +2,11 @@ os: Visual Studio 2017
 version: 0.9.2.{build}
 clone_depth: 5
 install:
-- git clone -q --depth=5 --branch=2019 https://github.com/uglide/RedisDesktopManager.git C:\projects\redisdesktopmanager
+- git clone -q --depth=5 --branch=%rdmtag% https://github.com/uglide/RedisDesktopManager.git C:\projects\redisdesktopmanager
 - set SRCDIR=C:\projects\RedisDesktopManager
 - set QTDIR=C:\Qt\5.9\msvc2017_64
 - set PATH=%QTDIR%\bin;%PATH%
 - cd %SRCDIR%
-- git checkout -qf 7a7118d22504c53d2fcd4c2e75d2e1fbdac28084
 - git submodule update --init --recursive
 - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
 - powershell -command "iex ((New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/appveyor/secure-file/master/install.ps1'))"
@@ -47,6 +46,6 @@ build_script:
 - del /Q  .\imageformats\qwebp.dll
 - C:\Python37\python.exe -m pip install -t . -r %SRCDIR%/src/py/requirements.txt
 - cd %SRCDIR%
-- 7z.exe a redis-desktop-manager-%APPVEYOR_BUILD_VERSION%.zip ./build/windows/installer/resources/*
+- 7z.exe a redis-desktop-manager-%rdmtag%.zip ./build/windows/installer/resources/*
 artifacts:
-- path: C:\projects\RedisDesktopManager\redis-desktop-manager-$(APPVEYOR_BUILD_VERSION).zip
+- path: C:\projects\RedisDesktopManager\redis-desktop-manager-$(rdmtag).zip
