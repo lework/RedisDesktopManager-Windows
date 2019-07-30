@@ -11,7 +11,6 @@ install:
 - git config --list
 - git submodule update --init --recursive
 - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
-- powershell -command "iex ((New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/appveyor/secure-file/master/install.ps1'))"
 - qmake -v
 - set
 
@@ -29,8 +28,8 @@ build_script:
 - nmake -f Makefile.Release2
 - cd %SRCDIR%/3rdparty
 - nuget install zlib-msvc14-x64 -Version 1.2.11.7795
-- cd ../qredisclient/3rdparty/hiredis
-- git apply ../hiredis-win.patch
+- cd ../qredisclient/3rdparty/
+- git apply ./hiredis-win.patch
 - cd %SRCDIR%/src
 - lrelease rdm.pro
 - qmake CONFIG+=release
