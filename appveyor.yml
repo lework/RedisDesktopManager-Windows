@@ -50,4 +50,4 @@ build_script:
 test_script:
 - echo 'Windows build is used only for installer compilation. Skip tests.'
 artifacts:
-  - path: 'redis-desktop-manager-*'
+  - path: 'C:\projects\redisdesktopmanager/redis-desktop-manager-*'
