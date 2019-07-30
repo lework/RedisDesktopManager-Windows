@@ -16,6 +16,9 @@ install:
 
 build_script:
 - cd %SRCDIR%
+- cd ./3rdparty/qredisclient/
+- powershell -command "(New-Object System.Net.WebClient).DownloadFile('%deps_url%', 'deps.zip')"
+- 7z.exe x deps.zip
 - python ./build/utils/set_version.py %APPVEYOR_BUILD_VERSION% > ./src/version.h
 - python ./build/utils/set_version.py %APPVEYOR_BUILD_VERSION% > ./3rdparty/crashreporter/src/version.h
 - cd ./3rdparty/crashreporter
@@ -24,11 +27,6 @@ build_script:
 - nmake -f Makefile.Release2
 - cd %SRCDIR%/3rdparty
 - nuget install zlib-msvc14-x64 -Version 1.2.11.7795
-- git clone https://github.com/randombit/botan.git
-- cd botan
-- python configure.py
-- cd ../qredisclient/3rdparty/hiredis
-- git apply ../hiredis-win.patch
 - cd %SRCDIR%/src
 - lrelease rdm.pro
 - qmake CONFIG+=release
@@ -37,6 +35,7 @@ build_script:
 - copy /y .\bin\windows\release\rdm.exe .\build\windows\installer\resources\rdm.exe
 - copy /y .\bin\windows\release\crashreporter.exe .\build\windows\installer\resources\crashreporter.exe
 - copy /y .\bin\windows\release\rdm.pdb .\build\windows\installer\resources\rdm.pdb
+- copy /y .\3rdparty\qredisclient\botan.dll .\build\windows\installer\resources\botan.dll
 - .\3rdparty\gbreakpad\src\tools\windows\binaries\dump_syms .\bin\windows\release\rdm.pdb > .\build\windows\installer\resources\rdm.sym
 - cd build/windows/installer/resources/
 - windeployqt --no-angle --no-opengl-sw --no-compiler-runtime --no-translations --release --force --qmldir %SRCDIR%/src/qml rdm.exe
@@ -46,7 +45,9 @@ build_script:
 - del /Q  .\imageformats\qtiff.dll
 - del /Q  .\imageformats\qwebp.dll
 - C:\Python37\python.exe -m pip install -t . -r %SRCDIR%/src/py/requirements.txt
+- cd %SRCDIR%
+- call "C:\\Program Files (x86)\\NSIS\\makensis.exe" /V1 /DVERSION=%APPVEYOR_BUILD_VERSION% ./build/windows/installer/installer.nsi
 - cd %APPVEYOR_BUILD_FOLDER%
-- 7z.exe a redis-desktop-manager-%RDM_VERSION%.zip  %SRCDIR%/build/windows/installer/resources/*
+- 7z.exe a redis-desktop-manager-%RDM_VERSION%.zip  %SRCDIR%/build/windows/installer/redis-desktop-manager-%APPVEYOR_BUILD_VERSION%.exe
 artifacts:
 - path: redis-desktop-manager-$(RDM_VERSION).zip
