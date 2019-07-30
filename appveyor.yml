@@ -36,7 +36,7 @@ build_script:
 - copy /y .\bin\windows\release\rdm.exe .\build\windows\installer\resources\rdm.exe
 - copy /y .\bin\windows\release\crashreporter.exe .\build\windows\installer\resources\crashreporter.exe
 - copy /y .\bin\windows\release\rdm.pdb .\build\windows\installer\resources\rdm.pdb
-- ./3rdparty/gbreakpad/src/tools/windows/binaries/dump_syms .\bin\windows\release\rdm.pdb  > .\build\windows\installer\resources\rdm.sym
+- 3rdparty/gbreakpad/src/tools/windows/binaries/dump_syms .\bin\windows\release\rdm.pdb  > .\build\windows\installer\resources\rdm.sym
 - cd build/windows/installer/resources/
 - windeployqt --no-angle --no-opengl-sw --no-compiler-runtime --no-translations --release --force --qmldir %SRCDIR%/src/qml rdm.exe
 - rmdir /S /Q .\platforminputcontexts
