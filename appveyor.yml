@@ -23,6 +23,9 @@ build_script:
 - nmake -f Makefile.Release2
 - cd %SRCDIR%/3rdparty
 - nuget install zlib-msvc14-x64 -Version 1.2.11.7795
+- git clone https://github.com/randombit/botan.git
+- cd botan
+- python configure.py
 - cd qredisclient/3rdparty/hiredis
 - git apply ../hiredis-win.patch
 - cd %SRCDIR%/src
