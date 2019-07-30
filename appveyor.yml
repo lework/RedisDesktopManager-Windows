@@ -19,6 +19,7 @@ build_script:
 - cd ./3rdparty/qredisclient/
 - powershell -command "(New-Object System.Net.WebClient).DownloadFile('%deps_url%', 'deps.zip')"
 - 7z.exe x deps.zip
+- del /F qredisclient.lib
 - cd %SRCDIR%
 - python ./build/utils/set_version.py %APPVEYOR_BUILD_VERSION% > ./src/version.h
 - python ./build/utils/set_version.py %APPVEYOR_BUILD_VERSION% > ./3rdparty/crashreporter/src/version.h
@@ -28,6 +29,8 @@ build_script:
 - nmake -f Makefile.Release2
 - cd %SRCDIR%/3rdparty
 - nuget install zlib-msvc14-x64 -Version 1.2.11.7795
+- cd qredisclient/3rdparty/hiredis
+- git apply ../hiredis-win.patch
 - cd %SRCDIR%/src
 - lrelease rdm.pro
 - qmake CONFIG+=release
