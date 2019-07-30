@@ -49,4 +49,4 @@ build_script:
 - cd %SRCDIR%
 - 7z.exe a redis-desktop-manager-%APPVEYOR_BUILD_VERSION%.zip ./build/windows/installer/resources/*
 artifacts:
-- path: '**\*.zip'
+- path: '**\\*.zip'
