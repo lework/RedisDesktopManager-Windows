@@ -57,7 +57,7 @@ artifacts:
 - path: redis-desktop-manager-$(RDM_VERSION).zip
 deploy:
   release: $(RDM_VERSION)
-  description: [Thank you RedisDesktopManager](https://github.com/uglide/RedisDesktopManager/releases/tag/$(RDM_VERSION))
+  description: "[Thank you RedisDesktopManager](https://github.com/uglide/RedisDesktopManager/releases/tag/$(RDM_VERSION))"
   provider: GitHub
   auth_token:
     secure: 3BFf8EhHwdlpCZJpwS8/8EizWPFKs9CJPYLL9RLaRZtNMtLWuVtAixRtZTogb0Af # your encrypted token from GitHub
