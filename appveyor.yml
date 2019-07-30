@@ -47,6 +47,6 @@ build_script:
 - del /Q  .\imageformats\qwebp.dll
 - C:\Python37\python.exe -m pip install -t . -r %SRCDIR%/src/py/requirements.txt
 - cd %APPVEYOR_BUILD_FOLDER%
-- 7z.exe a redis-desktop-manager-%RDM_VERSION%.zip ./build/windows/installer/resources/*
+- 7z.exe a redis-desktop-manager-%RDM_VERSION%.zip  %SRCDIR%/build/windows/installer/resources/*
 artifacts:
 - path: redis-desktop-manager-$(RDM_VERSION).zip
