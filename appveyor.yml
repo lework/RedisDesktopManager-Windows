@@ -8,6 +8,7 @@ install:
 - set QTDIR=C:\Qt\5.9\msvc2017_64
 - set PATH=%QTDIR%\bin;%PATH%
 - cd %SRCDIR%
+- git branch -a
 - git submodule update --init --recursive
 - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
 - powershell -command "iex ((New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/appveyor/secure-file/master/install.ps1'))"
@@ -19,6 +20,7 @@ build_script:
 - cd ./3rdparty/qredisclient/
 - powershell -command "(New-Object System.Net.WebClient).DownloadFile('%deps_url%', 'deps.zip')"
 - 7z.exe x deps.zip
+- cd %SRCDIR%
 - python ./build/utils/set_version.py %APPVEYOR_BUILD_VERSION% > ./src/version.h
 - python ./build/utils/set_version.py %APPVEYOR_BUILD_VERSION% > ./3rdparty/crashreporter/src/version.h
 - cd ./3rdparty/crashreporter
