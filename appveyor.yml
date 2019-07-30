@@ -21,11 +21,11 @@ build_script:
 - 7z.exe x deps.zip
 - del /F qredisclient.lib
 - cd %SRCDIR%
-- python ./build/utils/set_version.py %APPVEYOR_BUILD_VERSION% > ./src/version.h
-- python ./build/utils/set_version.py %APPVEYOR_BUILD_VERSION% > ./3rdparty/crashreporter/src/version.h
+- python ./build/utils/set_version.py %RDM_VERSION% > ./src/version.h
+- python ./build/utils/set_version.py %RDM_VERSION% > ./3rdparty/crashreporter/src/version.h
 - cd ./3rdparty/crashreporter
 - qmake CONFIG+=release DESTDIR=%SRCDIR%/bin/windows/release
-- powershell -Command "(Get-Content Makefile.Release).replace('DEFINES       =', 'DEFINES       = -DAPP_NAME=\\\"RedisDesktopManager\\\" -DAPP_VERSION=\\\""%APPVEYOR_BUILD_VERSION%"\\\" -DCRASH_SERVER_URL=\\\"https://oops.redisdesktop.com/crash-report\\\"') " > Makefile.Release2
+- powershell -Command "(Get-Content Makefile.Release).replace('DEFINES       =', 'DEFINES       = -DAPP_NAME=\\\"RedisDesktopManager\\\" -DAPP_VERSION=\\\""%RDM_VERSION%"\\\" -DCRASH_SERVER_URL=\\\"https://oops.redisdesktop.com/crash-report\\\"') " > Makefile.Release2
 - nmake -f Makefile.Release2
 - cd %SRCDIR%/3rdparty
 - nuget install zlib-msvc14-x64 -Version 1.2.11.7795
@@ -50,8 +50,19 @@ build_script:
 - del /Q  .\imageformats\qwebp.dll
 - C:\Python37\python.exe -m pip install -t . -r %SRCDIR%/src/py/requirements.txt
 - cd %SRCDIR%
-- call "C:\\Program Files (x86)\\NSIS\\makensis.exe" /V1 /DVERSION=%APPVEYOR_BUILD_VERSION% ./build/windows/installer/installer.nsi
+- call "C:\\Program Files (x86)\\NSIS\\makensis.exe" /V1 /DVERSION=%RDM_VERSION% ./build/windows/installer/installer.nsi
 - cd %APPVEYOR_BUILD_FOLDER%
 - 7z.exe a redis-desktop-manager-%RDM_VERSION%.zip  %SRCDIR%/build/windows/installer/redis-desktop-manager-%APPVEYOR_BUILD_VERSION%.exe
 artifacts:
 - path: redis-desktop-manager-$(RDM_VERSION).zip
+deploy:
+  release: $(RDM_VERSION)
+  description: $(RDM_VERSION)
+  provider: GitHub
+  auth_token:
+    secure: $(token) # your encrypted token from GitHub
+  artifact: redis-desktop-manager-$(RDM_VERSION).zip   # upload all NuGet packages to release assets
+  draft: false
+  prerelease: false
+  on:
+    branch: master                 # release from master branch only
