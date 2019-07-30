@@ -8,11 +8,11 @@ install:
 - set QTDIR=C:\Qt\5.9\msvc2017_64
 - set PATH=%QTDIR%\bin;%PATH%
 - cd %SRCDIR%
-- git config --list
+- git describe --abbrev=0 --tags
+- git rev-parse --short HEAD
 - git submodule update --init --recursive
 - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
 - qmake -v
-- set
 
 build_script:
 - cd %SRCDIR%
@@ -28,8 +28,6 @@ build_script:
 - nmake -f Makefile.Release2
 - cd %SRCDIR%/3rdparty
 - nuget install zlib-msvc14-x64 -Version 1.2.11.7795
-- cd qredisclient/3rdparty/hiredis
-- git apply ../hiredis-win.patch
 - cd %SRCDIR%/src
 - lrelease rdm.pro
 - qmake CONFIG+=release
@@ -38,6 +36,7 @@ build_script:
 - copy /y .\bin\windows\release\rdm.exe .\build\windows\installer\resources\rdm.exe
 - copy /y .\bin\windows\release\crashreporter.exe .\build\windows\installer\resources\crashreporter.exe
 - copy /y .\bin\windows\release\rdm.pdb .\build\windows\installer\resources\rdm.pdb
+- copy /y .\3rdparty\qredisclient\botan.dll .\build\windows\installer\resources\botan.dll
 - .\3rdparty\gbreakpad\src\tools\windows\binaries\dump_syms .\bin\windows\release\rdm.pdb > .\build\windows\installer\resources\rdm.sym
 - cd build/windows/installer/resources/
 - windeployqt --no-angle --no-opengl-sw --no-compiler-runtime --no-translations --release --force --qmldir %SRCDIR%/src/qml rdm.exe
