@@ -50,6 +50,7 @@ build_script:
 - del /Q  .\imageformats\qwebp.dll
 - C:\Python37\python.exe -m pip install -t . -r %SRCDIR%/src/py/requirements.txt
 - cd %SRCDIR%
+- dir /s %SRCDIR%/3rdparty/qredisclient/
 - call "C:\\Program Files (x86)\\NSIS\\makensis.exe" /V1 /DVERSION=%RDM_VERSION%.0.0 ./build/windows/installer/installer.nsi
 - cd %APPVEYOR_BUILD_FOLDER%
 - 7z.exe a redis-desktop-manager-%RDM_VERSION%.zip  %SRCDIR%/build/windows/installer/redis-desktop-manager-%RDM_VERSION%.0.0.exe %SRCDIR%/3rdparty/qredisclient/qredisclient.lib
