@@ -17,9 +17,7 @@ install:
 build_script:
 - cd %SRCDIR%
 - cd ./3rdparty/qredisclient/
-- powershell -command "(New-Object System.Net.WebClient).DownloadFile('%deps_url%', 'deps.zip')"
-- 7z.exe x deps.zip
-- del /F qredisclient.lib
+- 7z.exe x %APPVEYOR_BUILD_FOLDER%/deps.zip
 - cd %SRCDIR%
 - python ./build/utils/set_version.py %RDM_VERSION% > ./src/version.h
 - python ./build/utils/set_version.py %RDM_VERSION% > ./3rdparty/crashreporter/src/version.h
@@ -53,8 +51,7 @@ build_script:
 - dir /s %SRCDIR%/3rdparty/qredisclient/
 - call "C:\\Program Files (x86)\\NSIS\\makensis.exe" /V1 /DVERSION=%RDM_VERSION%.0.0 ./build/windows/installer/installer.nsi
 - cd %APPVEYOR_BUILD_FOLDER%
-- dir /s %SRCDIR%\3rdparty\qredisclient\
-- 7z.exe a redis-desktop-manager-%RDM_VERSION%.zip  %SRCDIR%/build/windows/installer/redis-desktop-manager-%RDM_VERSION%.0.0.exe %SRCDIR%/3rdparty/qredisclient/qredisclient.lib
+- 7z.exe a redis-desktop-manager-%RDM_VERSION%.zip  %SRCDIR%/build/windows/installer/redis-desktop-manager-%RDM_VERSION%.0.0.exe
 artifacts:
 - path: redis-desktop-manager-$(RDM_VERSION).zip
 deploy:
