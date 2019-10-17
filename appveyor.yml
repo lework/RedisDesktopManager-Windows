@@ -32,7 +32,6 @@ build_script:
 - nmake /S /NOLOGO release
 - cd %SRCDIR%
 - copy /y .\bin\windows\release\rdm.exe .\build\windows\installer\resources\rdm.exe
-- copy /y .\bin\windows\release\crashreporter.exe .\build\windows\installer\resources\crashreporter.exe
 - copy /y .\bin\windows\release\rdm.pdb .\build\windows\installer\resources\rdm.pdb
 - copy /y .\3rdparty\qredisclient\botan.dll .\build\windows\installer\resources\botan.dll
 - .\3rdparty\gbreakpad\src\tools\windows\binaries\dump_syms .\bin\windows\release\rdm.pdb > .\build\windows\installer\resources\rdm.sym
