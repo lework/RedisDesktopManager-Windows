@@ -31,9 +31,9 @@ build_script:
 - qmake CONFIG+=release
 - nmake /S /NOLOGO release
 - cd %SRCDIR%
-- dir /s .\bin\windows\release\
 - copy /y .\bin\windows\release\rdm.exe .\build\windows\installer\resources\rdm.exe
 - copy /y .\3rdparty\qredisclient\botan.dll .\build\windows\installer\resources\botan.dll
+- cd build/windows/installer/resources/
 - windeployqt --no-angle --no-opengl-sw --no-compiler-runtime --no-translations --release --force --qmldir %SRCDIR%/src/qml rdm.exe
 - rmdir /S /Q .\platforminputcontexts
 - rmdir /S /Q .\qmltooling
