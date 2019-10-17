@@ -22,15 +22,10 @@ build_script:
 - del /F qredisclient.lib
 - cd %SRCDIR%
 - python ./build/utils/set_version.py %RDM_VERSION% > ./src/version.h
-- python ./build/utils/set_version.py %RDM_VERSION% > ./3rdparty/crashreporter/src/version.h
-- cd ./3rdparty/crashreporter
-- qmake CONFIG+=release DESTDIR=%SRCDIR%/bin/windows/release
-- powershell -Command "(Get-Content Makefile.Release).replace('DEFINES       =', 'DEFINES       = -DAPP_NAME=\\\"RedisDesktopManager\\\" -DAPP_VERSION=\\\""%RDM_VERSION%"\\\" -DCRASH_SERVER_URL=\\\"https://oops.redisdesktop.com/crash-report\\\"') " > Makefile.Release2
-- nmake -f Makefile.Release2
 - cd %SRCDIR%/3rdparty
 - nuget install zlib-msvc14-x64 -Version 1.2.11.7795
 - cd qredisclient/3rdparty/hiredis
-- git apply ../hiredis-win.patch
+- git apply -v ../hiredis-win.patch
 - cd %SRCDIR%/src
 - lrelease rdm.pro
 - qmake CONFIG+=release
