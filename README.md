@@ -4,6 +4,8 @@ RedisDesktopManager Windows版本
 
 为了方便国内技术人员不方便以美元购买[订阅](https://redisdesktop.com/pricing)才开设的本仓库。如果在条件允许的情况下，衷心的希望购买[订阅](https://redisdesktop.com/pricing)支持下作者，在这里也非常感谢作者开源[RedisDesktopManager](https://github.com/uglide/RedisDesktopManager)。
 
+目前国内可以通过`微信`支付购买[redisdesktop.com](https://redisdesktop.com/)上的订阅，每次的购买都会有助于作者[uglide](https://github.com/uglide)推动RDM向前发展。
+
 ## 安装使用
 
 通过本仓库的 [releases](https://github.com/lework/RedisDesktopManager-Windows/releases) 页面下载`redis-desktop-manager-x.zip`文件， 解压后运行其中 `redis-desktop-manager-x.exe`文件, 就可以安装 RedisDesktopManager 。 目前只支持x64平台。
