@@ -1,12 +1,12 @@
 os: Visual Studio 2017
-version: 2019.1.{build}
+version: 2020.1.{build}
 clone_depth: 5
 install:
 - set REPODIR=%CD%
 - set /P RDM_VERSION=<version.txt
 - git clone -q --depth=5 --branch=%RDM_VERSION% https://github.com/uglide/RedisDesktopManager.git C:\projects\redisdesktopmanager
 - set SRCDIR=C:\projects\RedisDesktopManager
-- set QTDIR=C:\Qt\5.9\msvc2017_64
+- set QTDIR=C:\Qt\5.13\msvc2017_64
 - set PATH=%QTDIR%\bin;%PATH%
 - cd %SRCDIR%
 - git describe --abbrev=0 --tags
