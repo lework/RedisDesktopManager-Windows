@@ -28,7 +28,7 @@ build_script:
 - git apply -v ../hiredis-win.patch
 - cd %SRCDIR%/src
 - lrelease rdm.pro
-- qmake CONFIG+=release
+- qmake CONFIG+=release VERSION+=%RDM_VERSION%
 - nmake /S /NOLOGO release
 - cd %SRCDIR%
 - copy /y .\bin\windows\release\rdm.exe .\build\windows\installer\resources\rdm.exe
