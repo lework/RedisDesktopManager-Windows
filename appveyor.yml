@@ -30,7 +30,7 @@ build_script:
 - nuget install zlib-msvc14-x64 -Version 1.2.11.7795
 - cd qredisclient/3rdparty/hiredis
 - git apply -v ../hiredis-win.patch
-- copy "%REPO_DIR%\deps\3rdparty\qredisclient\src\qredisclient\*.* %SRC_DIR%\3rdparty\qredisclient\src\qredisclient\
+- copy %REPO_DIR%\deps\3rdparty\qredisclient\src\qredisclient\*.* %SRC_DIR%\3rdparty\qredisclient\src\qredisclient\
 
 - cd %SRC_DIR%/src
 - lrelease rdm.pro
