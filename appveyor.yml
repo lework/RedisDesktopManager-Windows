@@ -41,7 +41,15 @@ build_script:
 - rmdir /S /Q .\QtGraphicalEffects
 - del /Q  .\imageformats\qtiff.dll
 - del /Q  .\imageformats\qwebp.dll
-- C:\Python37\python.exe -m pip install -t . -r %SRCDIR%/src/py/requirements.txt
+- md Lib
+- xcopy /s /i %SRCDIR%\src\py Lib\site-packages
+- cd Lib\site-packages
+- C:\Python37\python.exe -m pip install -t . -r requirements.txt
+- C:\Python37\python.exe -m compileall -b .
+- del /s /q *.py py.qrc requirements.txt
+- FORFILES /P "." /S /M __pycache__ /C "cmd /c IF @ISDIR==TRUE rd /S /Q @FILE 2>nul" 2>nul
+- FORFILES /P "." /S /M *.dist-info /C "cmd /c IF @ISDIR==TRUE rd /S /Q @FILE 2>nul" 2>nul
+- FORFILES /P "." /S /M *.egg-info /C "cmd /c IF @ISDIR==TRUE rd /S /Q @FILE 2>nul" 2>nul
 - cd %SRCDIR%
 - call "C:\\Program Files (x86)\\NSIS\\makensis.exe" /V1 /DVERSION=%RDM_VERSION%.0.0 ./build/windows/installer/installer.nsi
 - cd %APPVEYOR_BUILD_FOLDER%
