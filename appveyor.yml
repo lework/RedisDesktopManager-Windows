@@ -28,7 +28,7 @@ build_script:
 - cd 3rdparty
 - 7z.exe x "%REPO_DIR%\deps\deps.zip" botan.dll botan.lib libssh2.lib -o./qredisclient/
 - nuget install zlib-msvc14-x64 -Version 1.2.11.7795
-- cd hiredis
+- cd qredisclient/3rdparty/hiredis
 - git apply -v ../hiredis-win.patch
 - copy "%REPO_DIR%\deps\3rdparty\qredisclient\src\qredisclient\*.* %SRC_DIR%\3rdparty\qredisclient\src\qredisclient\
 
