@@ -2,60 +2,75 @@ os: Visual Studio 2017
 version: 2020.1.{build}
 clone_depth: 5
 install:
-- set REPODIR=%CD%
 - set /P RDM_VERSION=<version.txt
-- git clone -q --depth=5 --branch=%RDM_VERSION% https://github.com/uglide/RedisDesktopManager.git C:\projects\redisdesktopmanager
-- set SRCDIR=C:\projects\RedisDesktopManager
-- set QTDIR=C:\Qt\5.13\msvc2017_64
-- set PATH=%QTDIR%\bin;%PATH%
-- cd %SRCDIR%
+- set PYTHON_EMBEDDED_VERSION=3.7.7
+
+- set REPO_DIR=%CD%
+- set SRC_DIR=C:\projects\RedisDesktopManager
+- set RESOURCE_DIR=%SRC_DIR%\build\windows\installer\resources
+- set QT_DIR=C:\Qt\5.13\msvc2017_64
+- set PY_DIR=C:\Python37-x64
+- set PATH=%QT_DIR%\bin;%PY_DIR%;%PATH%
+
+- git clone -q --depth=5 --branch=%RDM_VERSION% https://github.com/uglide/RedisDesktopManager.git %SRC_DIR%
+- cd %SRC_DIR%
 - git describe --abbrev=0 --tags
 - git rev-parse --short HEAD
 - git submodule update --init --recursive
+
 - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" x86_amd64
 - qmake -v
+- python -VV
 
 build_script:
-- cd %SRCDIR%
-- cd ./3rdparty/qredisclient/
-- 7z.exe x "%REPODIR%\deps.zip"
-- del /F qredisclient.lib
-- cd %SRCDIR%
+- cd %SRC_DIR%
 - python ./build/utils/set_version.py %RDM_VERSION% > ./src/version.h
-- cd %SRCDIR%/3rdparty
+- cd 3rdparty
+- 7z.exe x "%REPO_DIR%\deps\deps.zip" botan.dll botan.lib libssh2.lib -o./qredisclient/
 - nuget install zlib-msvc14-x64 -Version 1.2.11.7795
-- cd qredisclient/3rdparty/hiredis
+- cd 3rdparty/hiredis
 - git apply -v ../hiredis-win.patch
-- cd %SRCDIR%/src
+- copy "%REPO_DIR%\deps\3rdparty\qredisclient\src\qredisclient\*.* %SRC_DIR%\3rdparty\qredisclient\src\qredisclient\
+
+- cd %SRC_DIR%/src
 - lrelease rdm.pro
 - qmake CONFIG+=release VERSION+=%RDM_VERSION% DEFINES+="SSH_SUPPORT=1" DEFINES+="RDM_APPSTORE=1"
 - nmake /S /NOLOGO release
-- cd %SRCDIR%
-- copy /y .\bin\windows\release\rdm.exe .\build\windows\installer\resources\rdm.exe
-- copy /y .\3rdparty\qredisclient\botan.dll .\build\windows\installer\resources\botan.dll
-- 7z.exe x "%REPODIR%\python37-deps.zip" -o.\build\windows\installer\resources\
-- cd build/windows/installer/resources/
-- windeployqt --no-angle --no-opengl-sw --no-compiler-runtime --no-translations --release --force --qmldir %SRCDIR%/src/qml rdm.exe
+
+- cd %SRC_DIR%
+- copy /y .\bin\windows\release\rdm.exe %RESOURCE_DIR%\rdm.exe
+- copy /y .\3rdparty\qredisclient\botan.dll %RESOURCE_DIR%\botan.dll
+
+- cd %RESOURCE_DIR%
+- windeployqt --no-angle --no-opengl-sw --no-compiler-runtime --no-translations --release --force --qmldir %SRC_DIR%/src/qml rdm.exe
 - rmdir /S /Q .\platforminputcontexts
 - rmdir /S /Q .\qmltooling
 - rmdir /S /Q .\QtGraphicalEffects
 - del /Q  .\imageformats\qtiff.dll
 - del /Q  .\imageformats\qwebp.dll
+
+- cd %RESOURCE_DIR%
+- powershell -command "(New-Object System.Net.WebClient).DownloadFile('https://www.python.org/ftp/python/%PYTHON_EMBEDDED_VERSION%/python-%PYTHON_EMBEDDED_VERSION%-embed-amd64.zip', 'python-deps.zip')"
+- 7z.exe x python-deps.zip python37.zip python37.dll
+- del /Q python-deps.zip
 - md Lib
-- xcopy /s /i %SRCDIR%\src\py Lib\site-packages
+- xcopy /s /i %SRC_DIR%\src\py Lib\site-packages
 - cd Lib\site-packages
-- C:\Python37\python.exe -m pip install -t . -r requirements.txt
-- C:\Python37\python.exe -m compileall -b .
+- python -m pip install -t . -r requirements.txt
+- python -m compileall -b .
 - del /s /q *.py py.qrc requirements.txt
 - FORFILES /P "." /S /M __pycache__ /C "cmd /c IF @ISDIR==TRUE rd /S /Q @FILE 2>nul" 2>nul
 - FORFILES /P "." /S /M *.dist-info /C "cmd /c IF @ISDIR==TRUE rd /S /Q @FILE 2>nul" 2>nul
 - FORFILES /P "." /S /M *.egg-info /C "cmd /c IF @ISDIR==TRUE rd /S /Q @FILE 2>nul" 2>nul
-- cd %SRCDIR%
+
+- cd %SRC_DIR%
 - call "C:\\Program Files (x86)\\NSIS\\makensis.exe" /V1 /DVERSION=%RDM_VERSION%.0.0 ./build/windows/installer/installer.nsi
 - cd %APPVEYOR_BUILD_FOLDER%
-- 7z.exe a redis-desktop-manager-%RDM_VERSION%.zip  %SRCDIR%/build/windows/installer/redis-desktop-manager-%RDM_VERSION%.0.0.exe
+- 7z.exe a redis-desktop-manager-%RDM_VERSION%.zip %SRC_DIR%/build/windows/installer/redis-desktop-manager-%RDM_VERSION%.0.0.exe
+
 artifacts:
 - path: redis-desktop-manager-$(RDM_VERSION).zip
+
 deploy:
   release: $(RDM_VERSION)
   description: "[Thank you RedisDesktopManager](https://github.com/uglide/RedisDesktopManager/releases/tag/$(RDM_VERSION))"
