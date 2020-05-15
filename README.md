@@ -8,9 +8,14 @@
 
 RedisDesktopManager Windows版本
 
-为了方便国内技术人员不方便以美元购买 [订阅](https://redisdesktop.com/pricing) 才开设的本仓库。如果在条件允许的情况下，衷心的希望购买 [订阅](https://redisdesktop.com/pricing) 支持下作者，在这里也非常感谢作者开源 [RedisDesktopManager](https://github.com/uglide/RedisDesktopManager)。
+**通知**
 
-目前国内可以通过`微信`支付购买 [redisdesktop.com](https://redisdesktop.com/) 上的订阅，每次的购买都会有助于作者 [uglide](https://github.com/uglide) 推动RDM向前发展。
+从今天开始， 可以在 Microsoft Store 上以超级优惠价 **¥49.00** 来购买 RedisDesktopManager。从此不再有登录，订阅，定期付款，下载缓慢等问题，并以合理的价格获得开源项目持续更新的软件，您每次的购买都会有助于作者 [uglide](https://github.com/uglide) 推动 RedisDesktopManager 向前发展。
+
+点击此按钮，快速下载软件吧！ <a target="_blank" href='//www.microsoft.com/store/apps/9NDK76ZVZ3TM?cid=storebadge&ocid=badge'>
+<img height="20" src='https://developer.microsoft.com/en-us/store/badges/images/Chinese_Simplified_Get_L.png' alt='Get it from Microsoft'/>
+</a>
+
 
 ## 安装使用
 
