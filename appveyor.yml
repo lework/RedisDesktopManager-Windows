@@ -50,11 +50,13 @@ build_script:
 
 - cd %RESOURCE_DIR%
 - powershell -command "(New-Object System.Net.WebClient).DownloadFile('https://www.python.org/ftp/python/%PYTHON_EMBEDDED_VERSION%/python-%PYTHON_EMBEDDED_VERSION%-embed-amd64.zip', 'python-deps.zip')"
-- 7z.exe x python-deps.zip python37.zip python37.dll
-- del /Q python-deps.zip
+- 7z.exe x python-deps.zip python37.zip *.pyd *.dll
+- del /Q python-deps.zip python3.dll libcrypto-1_1.dll libssl-1_1.dll _ssl.pyd sqlite3.dll _sqlite3.pyd
 - md Lib
 - xcopy /s /i %SRC_DIR%\src\py Lib\site-packages
 - cd Lib\site-packages
+- powershell -Command "(gc a.txt) -replace '-e ', '' | Out-File -encoding ASCII a.txt"
+- python -m pip install --upgrade pip wheel
 - python -m pip install -t . -r requirements.txt
 - python -m compileall -b .
 - del /s /q *.py py.qrc requirements.txt
