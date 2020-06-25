@@ -55,7 +55,7 @@ build_script:
 - md Lib
 - xcopy /s /i %SRC_DIR%\src\py Lib\site-packages
 - cd Lib\site-packages
-- powershell -Command "(gc a.txt) -replace '-e ', '' | Out-File -encoding ASCII a.txt"
+- powershell -Command "(gc requirements.txt) -replace '-e ', '' | Out-File -encoding ASCII requirements.txt"
 - python -m pip install --upgrade pip wheel
 - python -m pip install -t . -r requirements.txt
 - python -m compileall -b .
