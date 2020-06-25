@@ -60,9 +60,9 @@ build_script:
 - python -m pip install -t . -r requirements.txt
 - python -m compileall -b .
 - del /s /q *.py py.qrc requirements.txt
-- FORFILES /P "." /S /M __pycache__ /C "cmd /c IF @ISDIR==TRUE rd /S /Q @FILE 2>nul" 2>nul
-- FORFILES /P "." /S /M *.dist-info /C "cmd /c IF @ISDIR==TRUE rd /S /Q @FILE 2>nul" 2>nul
-- FORFILES /P "." /S /M *.egg-info /C "cmd /c IF @ISDIR==TRUE rd /S /Q @FILE 2>nul" 2>nul
+- FORFILES /P "." /S /M __pycache__ /C "cmd /c IF @ISDIR==TRUE rd /S /Q @FILE 2>nul" 2>nul | EXIT /B 0
+- FORFILES /P "." /S /M *.dist-info /C "cmd /c IF @ISDIR==TRUE rd /S /Q @FILE 2>nul" 2>nul | EXIT /B 0
+- FORFILES /P "." /S /M *.egg-info /C "cmd /c IF @ISDIR==TRUE rd /S /Q @FILE 2>nul" 2>nul | EXIT /B 0
 
 - cd %SRC_DIR%
 - call "C:\\Program Files (x86)\\NSIS\\makensis.exe" /V1 /DVERSION=%RDM_VERSION%.0.0 ./build/windows/installer/installer.nsi
