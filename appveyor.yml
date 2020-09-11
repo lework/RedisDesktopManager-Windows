@@ -1,4 +1,4 @@
-os: Visual Studio 2017
+os: Visual Studio 2019
 version: 2020.1.{build}
 clone_depth: 5
 skip_tags: true
@@ -10,7 +10,7 @@ install:
 - set REPO_DIR=%CD%
 - set SRC_DIR=C:\projects\RedisDesktopManager
 - set RESOURCE_DIR=%SRC_DIR%\build\windows\installer\resources
-- set QT_DIR=C:\Qt\5.13\msvc2017_64
+- set QT_DIR=C:\Qt\5.14\msvc2017_64
 - set PY_DIR=C:\Python37-x64
 - set PATH=%QT_DIR%\bin;%PY_DIR%;%PATH%
 
@@ -20,7 +20,7 @@ install:
 - git rev-parse --short HEAD
 - git submodule update --init --recursive
 
-- call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" x86_amd64
+- call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat" x86_amd64
 - qmake -v
 - python -VV
 
