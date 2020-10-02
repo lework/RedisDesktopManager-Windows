@@ -85,7 +85,7 @@ build_script:
 - call "C:\\Program Files (x86)\\NSIS\\makensis.exe" /V1 /DVERSION=%RDM_VERSION%.0.0 ./build/windows/installer/installer.nsi
 - cd %APPVEYOR_BUILD_FOLDER%
 - 7z.exe a redis-desktop-manager-%RDM_VERSION%.zip %SRC_DIR%/build/windows/installer/redis-desktop-manager-%RDM_VERSION%.0.0.exe
-- 7za.exe a redis-desktop-manager-%RDM_VERSION%-src.zip  %SRC_DIR%/
+- 7z.exe a redis-desktop-manager-%RDM_VERSION%-src.zip  %SRC_DIR%/*
 
 artifacts:
 - path: redis-desktop-manager-$(RDM_VERSION).zip
