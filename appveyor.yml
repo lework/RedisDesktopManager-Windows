@@ -85,9 +85,11 @@ build_script:
 - call "C:\\Program Files (x86)\\NSIS\\makensis.exe" /V1 /DVERSION=%RDM_VERSION%.0.0 ./build/windows/installer/installer.nsi
 - cd %APPVEYOR_BUILD_FOLDER%
 - 7z.exe a redis-desktop-manager-%RDM_VERSION%.zip %SRC_DIR%/build/windows/installer/redis-desktop-manager-%RDM_VERSION%.0.0.exe
+- 7za.exe a redis-desktop-manager-%RDM_VERSION%-src.zip  %SRC_DIR%/
 
 artifacts:
 - path: redis-desktop-manager-$(RDM_VERSION).zip
+- path: redis-desktop-manager-$(RDM_VERSION)-src.zip
 
 deploy:
   release: $(RDM_VERSION)
@@ -95,7 +97,7 @@ deploy:
   provider: GitHub
   auth_token:
     secure: e3sDWfihvmg2L+/Fi6VmT6ZBtcLTyKWSoCo0bjfiWBjv/wbR/VTSOqbuGJa4c4uB # your encrypted token from GitHub
-  artifact: redis-desktop-manager-$(RDM_VERSION).zip   # upload all NuGet packages to release assets
+  artifact: redis-desktop-manager-$(RDM_VERSION).zip,redis-desktop-manager-$(RDM_VERSION)-src.zip   # upload all NuGet packages to release assets
   draft: false
   prerelease: false
   on:
