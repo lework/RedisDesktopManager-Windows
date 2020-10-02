@@ -10,7 +10,7 @@ install:
 - set REPO_DIR=%CD%
 - set SRC_DIR=C:\projects\RedisDesktopManager
 - set RESOURCE_DIR=%SRC_DIR%\build\windows\installer\resources
-- set QT_DIR=C:\Qt\5.14\msvc2017_64
+- set QT_DIR=C:\Qt\5.15\msvc2019_64
 - set PY_DIR=C:\Python37-x64
 - set PATH=%QT_DIR%\bin;%PY_DIR%;%PATH%
 
