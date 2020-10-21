@@ -20,7 +20,7 @@
 
 ## 安装使用
 
-通过本仓库的 [releases](https://github.com/lework/RedisDesktopManager-Windows/releases) 页面下载`redis-desktop-manager-xxx.zip`文件， 解压后运行其中 `redis-desktop-manager-xxx.exe`文件, 就可以安装 RedisDesktopManager 。 目前只支持x64平台。
+通过本仓库的 [releases](https://github.com/lework/RedisDesktopManager-Windows/releases) 页面下载`rdm-xxx.zip`文件， 解压后运行其中 `rdm-xxx.exe`文件, 就可以安装 RedisDesktopManager 。 目前只支持x64平台。
 
 
 
