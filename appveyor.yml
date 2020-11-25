@@ -72,7 +72,8 @@ build_script:
 - md Lib
 - xcopy /s /i %SRC_DIR%\src\py Lib\site-packages
 - cd Lib\site-packages
-- powershell -Command "(gc requirements.txt) -replace '-e ', '' | Out-File -encoding ASCII requirements.txt"
+# https://tinyurl.com/y3dm3h86
+- powershell -Command "(gc requirements.txt) -replace 'numpy', 'numpy==1.19.3' | Out-File -encoding ASCII requirements.txt"
 - python -m pip install --upgrade pip wheel
 - python -m pip install -t . -r requirements.txt
 - python -m compileall -b .
