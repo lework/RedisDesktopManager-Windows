@@ -35,11 +35,10 @@ build_script:
 
  # build lz4.lib
 - cd %SRC_DIR%\3rdparty\lz4\build\cmake
-- cmake
+- cmake .
    -G "Visual Studio 16 2019" -A x64
    -DLZ4_BUNDLED_MODE=on
    -DBUILD_SHARED_LIBS=on
-   --build .
 - cmake
    --build .
    --config "Release"
