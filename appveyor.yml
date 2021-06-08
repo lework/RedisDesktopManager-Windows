@@ -5,13 +5,13 @@ skip_tags: true
 
 install:
 - set /P RDM_VERSION=<version.txt
-- set PYTHON_EMBEDDED_VERSION=3.7.7
+- set PYTHON_EMBEDDED_VERSION=3.9.5
 
 - set REPO_DIR=%CD%
 - set SRC_DIR=C:\projects\RedisDesktopManager
 - set RESOURCE_DIR=%SRC_DIR%\build\windows\installer\resources
 - set QT_DIR=C:\Qt\5.15\msvc2019_64
-- set PY_DIR=C:\Python37-x64
+- set PY_DIR=C:\Python39-x64
 - set PATH=%QT_DIR%\bin;%PY_DIR%;%PATH%
 
 - git clone -q --depth=5 --branch=%RDM_VERSION% https://github.com/uglide/RedisDesktopManager.git %SRC_DIR%
@@ -66,7 +66,7 @@ build_script:
 
 - cd %RESOURCE_DIR%
 - powershell -command "(New-Object System.Net.WebClient).DownloadFile('https://www.python.org/ftp/python/%PYTHON_EMBEDDED_VERSION%/python-%PYTHON_EMBEDDED_VERSION%-embed-amd64.zip', 'python-deps.zip')"
-- 7z.exe x python-deps.zip python37.zip *.pyd *.dll
+- 7z.exe x python-deps.zip python*.zip *.pyd *.dll
 - del /Q python-deps.zip python3.dll libcrypto-1_1.dll libssl-1_1.dll _ssl.pyd sqlite3.dll _sqlite3.pyd
 - md Lib
 - xcopy /s /i %SRC_DIR%\src\py Lib\site-packages
