@@ -5,7 +5,7 @@ skip_tags: true
 
 install:
 - set /P RDM_VERSION=<version.txt
-- set PYTHON_EMBEDDED_VERSION=3.9.5
+- set PYTHON_EMBEDDED_VERSION=3.8.11
 
 - set REPO_DIR=%CD%
 - set SRC_DIR=C:\projects\RedisDesktopManager
