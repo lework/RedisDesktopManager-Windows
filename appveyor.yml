@@ -34,7 +34,7 @@ build_script:
 - git apply -v ../hiredis-win.patch
 
 # build brotli
-- cd %RDM_DIR%/3rdparty/brotli
+- cd %SRC_DIR%\3rdparty\brotli
 - cmake .
     -G "Visual Studio 16 2019" -A x64
     -DBUILD_SHARED_LIBS=on
@@ -53,7 +53,7 @@ build_script:
    --config "Release"
    
 # build snappy
-- cd %RDM_DIR%/3rdparty/snappy
+- cd %SRC_DIR%\3rdparty\snappy
 - cmake .
     -G "Visual Studio 16 2019" -A x64
     -DBUILD_SHARED_LIBS=on
@@ -65,7 +65,7 @@ build_script:
 - cp -f Release/snappy.dll %RESOURCE_DIR%/
   
 # build zstd
-- cd %RDM_DIR%/3rdparty/zstd/build/cmake
+- cd %SRC_DIR%\3rdparty\zstd\build\cmake
 - cmake .
     -G "Visual Studio 16 2019" -A x64
     -DBUILD_SHARED_LIBS=on
