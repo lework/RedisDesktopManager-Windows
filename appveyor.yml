@@ -33,6 +33,15 @@ build_script:
 - cd qredisclient/3rdparty/hiredis
 - git apply -v ../hiredis-win.patch
 
+# build brotli
+- cd %RDM_DIR%/3rdparty/brotli
+- cmake .
+    -G "Visual Studio 16 2019" -A x64
+    -DBUILD_SHARED_LIBS=on
+- cmake
+    --build .
+    --config "Release"
+
  # build lz4.lib
 - cd %SRC_DIR%\3rdparty\lz4\build\cmake
 - cmake .
@@ -43,6 +52,27 @@ build_script:
    --build .
    --config "Release"
    
+# build snappy
+- cd %RDM_DIR%/3rdparty/snappy
+- cmake .
+    -G "Visual Studio 16 2019" -A x64
+    -DBUILD_SHARED_LIBS=on
+    -DSNAPPY_BUILD_TESTS=off
+    -DSNAPPY_BUILD_BENCHMARKS=off
+- cmake
+    --build .
+    --config "Release"
+- cp -f Release/snappy.dll %RESOURCE_DIR%/
+  
+# build zstd
+- cd %RDM_DIR%/3rdparty/zstd/build/cmake
+- cmake .
+    -G "Visual Studio 16 2019" -A x64
+    -DBUILD_SHARED_LIBS=on
+- cmake
+    --build .
+    --config "Release"
+
 # build app
 - cd %SRC_DIR%\3rdparty
 - nuget install zlib-msvc14-x64 -Version 1.2.11.7795
