@@ -102,11 +102,11 @@ build_script:
 - xcopy /s /i %SRC_DIR%\src\py Lib\site-packages
 - cd Lib\site-packages
 # https://tinyurl.com/y3dm3h86
-- powershell -Command "(gc requirements.txt) -replace 'numpy', 'numpy==1.19.3' | Out-File -encoding ASCII requirements.txt"
 - python -m pip install --upgrade pip wheel
 - python -m pip install -t . -r requirements.txt
+- python -m pip list --path .
 - python -m compileall -b .
-- del /s /q *.py py.qrc requirements.txt
+- del /s /q *.py *.exe py.qrc requirements.txt
 - FORFILES /P "." /S /M __pycache__ /C "cmd /c IF @ISDIR==TRUE rd /S /Q @FILE 2>nul" 2>nul | EXIT /B 0
 - FORFILES /P "." /S /M *.dist-info /C "cmd /c IF @ISDIR==TRUE rd /S /Q @FILE 2>nul" 2>nul | EXIT /B 0
 - FORFILES /P "." /S /M *.egg-info /C "cmd /c IF @ISDIR==TRUE rd /S /Q @FILE 2>nul" 2>nul | EXIT /B 0
