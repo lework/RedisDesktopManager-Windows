@@ -4,7 +4,7 @@ clone_depth: 5
 skip_tags: true
 
 install:
-- set /P RDM_VERSION=<version.txt
+- set /P RESP_VERSION=<version.txt
 - set PYTHON_EMBEDDED_VERSION=3.8.10
 
 - set REPO_DIR=%CD%
@@ -14,7 +14,7 @@ install:
 - set PY_DIR=C:\Python38-x64
 - set PATH=%QT_DIR%\bin;%PY_DIR%;%PATH%
 
-- git clone -q --depth=5 --branch=%RDM_VERSION% https://github.com/uglide/RedisDesktopManager.git %SRC_DIR%
+- git clone -q --depth=5 --branch=%RESP_VERSION% https://github.com/uglide/RedisDesktopManager.git %SRC_DIR%
 - cd %SRC_DIR%
 - git describe --abbrev=0 --tags
 - git rev-parse --short HEAD
@@ -26,7 +26,6 @@ install:
 
 build_script:
 - cd %SRC_DIR%
-- python ./build/utils/set_version.py %RDM_VERSION% > ./src/version.h
 - cd 3rdparty
 - 7z.exe x "%REPO_DIR%\deps\deps.zip" botan.dll botan.lib libssh2.lib -o./qredisclient/
 - nuget install zlib-msvc14-x64 -Version 1.2.11.7795
@@ -78,16 +77,16 @@ build_script:
 - nuget install zlib-msvc14-x64 -Version 1.2.11.7795
   
 - cd %SRC_DIR%/src
-- lrelease rdm.pro
-- qmake CONFIG+=release VERSION+=%RDM_VERSION%
+- lrelease resp.pro
+- qmake CONFIG+=release VERSION+=%RESP_VERSION%
 - nmake /S /NOLOGO release
 
 - cd %SRC_DIR%
-- copy /y .\bin\windows\release\rdm.exe %RESOURCE_DIR%\rdm.exe
+- copy /y .\bin\windows\release\resp.exe %RESOURCE_DIR%\resp.exe
 - copy /y .\3rdparty\qredisclient\botan.dll %RESOURCE_DIR%\botan.dll
 
 - cd %RESOURCE_DIR%
-- windeployqt --no-angle --no-opengl-sw --no-compiler-runtime --no-translations --release --force --qmldir %SRC_DIR%/src/qml rdm.exe
+- windeployqt --no-angle --no-opengl-sw --no-compiler-runtime --no-translations --release --force --qmldir %SRC_DIR%/src/qml resp.exe
 - rmdir /S /Q .\platforminputcontexts
 - rmdir /S /Q .\qmltooling
 - rmdir /S /Q .\QtGraphicalEffects
@@ -112,22 +111,22 @@ build_script:
 - FORFILES /P "." /S /M *.egg-info /C "cmd /c IF @ISDIR==TRUE rd /S /Q @FILE 2>nul" 2>nul | EXIT /B 0
 
 - cd %SRC_DIR%
-- call "C:\\Program Files (x86)\\NSIS\\makensis.exe" /V1 /DVERSION=%RDM_VERSION%.0.0 ./build/windows/installer/installer.nsi
+- call "C:\\Program Files (x86)\\NSIS\\makensis.exe" /V1 /DVERSION=%RESP_VERSION%.0.0 ./build/windows/installer/installer.nsi
 - cd %APPVEYOR_BUILD_FOLDER%
-- 7z.exe a rdm-%RDM_VERSION%.zip %SRC_DIR%/build/windows/installer/rdm-%RDM_VERSION%.0.0.exe
-- 7z.exe a -xr"!*\.git\" rdm-%RDM_VERSION%-src.zip  %SRC_DIR%/*
+- 7z.exe a resp-%RESP_VERSION%.zip %SRC_DIR%/build/windows/installer/resp-%RESP_VERSION%.0.0.exe
+- 7z.exe a -xr"!*\.git\" resp-%RESP_VERSION%-src.zip  %SRC_DIR%/*
 
 artifacts:
-- path: rdm-$(RDM_VERSION).zip
-- path: rdm-$(RDM_VERSION)-src.zip
+- path: resp-$(RESP_VERSION).zip
+- path: resp-$(RESP_VERSION)-src.zip
 
 deploy:
-  release: $(RDM_VERSION)
-  description: "[Thank you RedisDesktopManager](https://github.com/uglide/RedisDesktopManager/releases/tag/$(RDM_VERSION))"
+  release: $(RESP_VERSION)
+  description: "[Thank you RedisDesktopManager](https://github.com/uglide/RedisDesktopManager/releases/tag/$(RESP_VERSION))"
   provider: GitHub
   auth_token:
     secure: e3sDWfihvmg2L+/Fi6VmT6ZBtcLTyKWSoCo0bjfiWBjv/wbR/VTSOqbuGJa4c4uB # your encrypted token from GitHub
-  artifact: rdm-$(RDM_VERSION).zip,rdm-$(RDM_VERSION)-src.zip   # upload all NuGet packages to release assets
+  artifact: resp-$(RESP_VERSION).zip,resp-$(RESP_VERSION)-src.zip   # upload all NuGet packages to release assets
   draft: false
   prerelease: false
   on:
