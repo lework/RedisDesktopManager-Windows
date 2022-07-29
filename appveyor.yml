@@ -29,8 +29,6 @@ build_script:
 - cd 3rdparty
 - 7z.exe x "%REPO_DIR%\deps\deps.zip" botan.dll botan.lib libssh2.lib -o./qredisclient/
 - nuget install zlib-msvc14-x64 -Version 1.2.11.7795
-- cd qredisclient/3rdparty/hiredis
-- git apply -v ../hiredis-win.patch
 
 # build brotli
 - cd %SRC_DIR%\3rdparty\brotli
